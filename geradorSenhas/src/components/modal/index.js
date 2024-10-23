@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 
 
 
-export function ModalPassword({senha, handleClose}){
+export function ModalPassword({senha, handleClose, salvarSenha }){
 
   function copyToClipboard() {
     Clipboard.setStringAsync(senha);
@@ -32,7 +32,7 @@ export function ModalPassword({senha, handleClose}){
             <Text style={styles.buttonText}>Voltar</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.buttonSave]}>
+          <TouchableOpacity style={[styles.button, styles.buttonSave]} onPress={salvarSenha}>
             <Text style={styles.buttonSaveText}>Salvar senha</Text>
           </TouchableOpacity>
         </View>

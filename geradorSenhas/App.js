@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal, Button } from 'react-native';
+import { useRouter } from 'expo-router';
 
 // *** NOVO: Importações para Navegação ***
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,6 +21,8 @@ function HomeScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [savedPasswords, setSavedPasswords] = useState([]); // *** NOVO: Estado para Senhas Salvas ***
 
+  const router = useRouter();
+
   function gerarSenha() {
     let senha = "";
 
@@ -36,7 +39,6 @@ function HomeScreen({ navigation }) {
     setSavedPasswords(prevPasswords => {
       const updatedPasswords = [...prevPasswords, senhaGerada];
       setModalVisible(false); // Fecha o modal após salvar a senha
-      navigation.navigate('SavedPasswords', { savedPasswords: updatedPasswords }); // Navega e passa as senhas
       return updatedPasswords; // Atualiza o estado de senhas salvas
     });
   }
@@ -54,6 +56,8 @@ function HomeScreen({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={gerarSenha}>
         <Text style={styles.textButton}>Gerar Senha</Text>
       </TouchableOpacity>
+      
+        <Button title="Ir para Senhas Salvas" onPress={() => navigation.navigate('SavedPasswords', { savedPasswords })} />
 
       <Modal visible={modalVisible} animationType="fade" transparent={true} >
         <ModalPassword senha={senhaGerada} handleClose={() => setModalVisible(false)} salvarSenha={salvarSenha} /> 
@@ -101,6 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 8,
     padding: 6,
+    marginBottom: 25
   },
   textButton: {
     color: '#FFF',

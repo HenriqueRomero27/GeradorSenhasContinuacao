@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Modal, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal, Button, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import LogoPreta from "./src/img/MigasSecurityPreta.svg"
+import LogoBranca from "./src/img/MigasSecurityBranca.svg"
 
 // *** NOVO: Importações para Navegação ***
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import SavedPasswords from './src/screens/SavedPasswords'; // *** NOVO: Tela de Senhas Salvas ***
 import { ModalPassword } from './src/components/modal/index'; // Componente de Modal já existente
+import QuemSomos from './src/screens/QuemSomos';
 
 let charset = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -45,26 +48,29 @@ function HomeScreen({ navigation }) {
   // *** Fim da Função de Salvar Senha e Navegar ***
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View style={styles.content}>
       <Image
-        source={require("./src/img/logo.png")}
+        source={LogoBranca}
         style={styles.logo}
       />
-
-      <Text style={styles.title}>LockGen</Text>
-
-      <TouchableOpacity style={styles.button} onPress={gerarSenha}>
-        <Text style={styles.textButton}>Gerar Senha</Text>
-      </TouchableOpacity>
-      
-        <Button title="Ir para Senhas Salvas" onPress={() => navigation.navigate('SavedPasswords', { savedPasswords })} />
-
+        <TouchableOpacity style={styles.button} onPress={gerarSenha}>
+          <Text style={styles.textButton}>Gerar Senha</Text>
+        </TouchableOpacity>
+        
+          <TouchableOpacity style={styles.buttonPage}  onPress={() => navigation.navigate('SavedPasswords', { savedPasswords })}>
+            <Text style={styles.textButton}>Ir para Senhas Salvas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonPage}  onPress={() => navigation.navigate('QuemSomos', { QuemSomos })}>
+            <Text style={styles.textButton}>Ir para Quem Somos</Text>
+          </TouchableOpacity>
+      </View>
       <Modal visible={modalVisible} animationType="fade" transparent={true} >
         <ModalPassword senha={senhaGerada} handleClose={() => setModalVisible(false)} salvarSenha={salvarSenha} /> 
       </Modal>
 
       <Text style={styles.senha}>{senhaGerada}</Text>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -74,6 +80,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="SavedPasswords" component={SavedPasswords} />
+        <Stack.Screen name="QuemSomos" component={QuemSomos} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -86,11 +93,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  content: {
+    padding: 20,
+    marginTop: 20,
+    display: "flex",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center"
   },
   logo: {
-    marginBottom: 20,
+    alignSelf: "center",
+    width: 240,
+    height: 240
   },
   title: {
     fontWeight: 'bold',
@@ -107,6 +122,16 @@ const styles = StyleSheet.create({
     padding: 6,
     marginBottom: 25
   },
+  buttonPage: {
+    backgroundColor: "#32bada",
+    width: '70%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    padding: 6,
+    marginBottom: 25
+  },  
   textButton: {
     color: '#FFF',
     fontSize: 15,
